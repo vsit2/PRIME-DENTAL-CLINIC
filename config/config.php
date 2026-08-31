@@ -77,15 +77,33 @@ define('APP_NAME', 'PRIME DENTAL CLINIC');
 define('APP_TAGLINE', 'The Prime Destination For Smiles');
 define('BASE_DIR', dirname(__DIR__));
 
-// Determine dynamic base URL for XAMPP or PHP built-in server
-$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443)) ? "https://" : "http://";
-$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
-$scriptName = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? ''));
-$baseUrl = rtrim($protocol . $host . $scriptName, '/');
-if (substr($baseUrl, -6) === '/pages' || substr($baseUrl, -4) === '/api' || substr($baseUrl, -6) === '/print') {
-    $baseUrl = dirname($baseUrl);
+// Determine dynamic base URL / path for XAMPP, ngrok tunnels, Render, or subdirectories
+$envBaseUrl = getenv('BASE_URL') ?: (getenv('APP_BASE_URL') ?: null);
+
+if ($envBaseUrl !== null) {
+    // If explicitly configured in environment / .env
+    define('BASE_URL', rtrim($envBaseUrl, '/'));
+} else {
+    // Dynamically calculate root-relative base path from script execution directory
+    $scriptDir = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? ''));
+    
+    // Strip standard subdirectories if script is executed from subfolders
+    $subfolders = ['/pages', '/api', '/print', '/database', '/tests'];
+    foreach ($subfolders as $sub) {
+        $subLen = strlen($sub);
+        if (substr($scriptDir, -$subLen) === $sub) {
+            $scriptDir = substr($scriptDir, 0, -$subLen);
+            break;
+        }
+    }
+    
+    $basePath = rtrim($scriptDir, '/');
+    if ($basePath === '' || $basePath === '.') {
+        $basePath = '';
+    }
+    
+    define('BASE_URL', $basePath);
 }
-define('BASE_URL', rtrim($baseUrl, '/'));
 
 // Static Clinic Information
 define('CLINIC_NAME', 'PRIME DENTAL CLINIC');

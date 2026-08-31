@@ -199,7 +199,7 @@ if ($isCli) {
                 &bull; Password: <code>admin123</code>
             </div>
             <div style="margin-top: 20px;">
-                <a href="../login.php" class="action-btn">Launch Prime Dental System &rarr;</a>
+                <a href="<?= BASE_URL ?>/login.php" class="action-btn">Launch Prime Dental System &rarr;</a>
             </div>
         <?php else: ?>
             <div style="margin-top: 20px;">

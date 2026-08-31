@@ -208,8 +208,9 @@ function performPatientSearch(query, dropdown, onStart) {
  */
 function getApiEndpoint(relativePath) {
   const cleanPath = relativePath.replace(/^\/+/, '');
-  if (window.PRIME_BASE_URL) {
-    return window.PRIME_BASE_URL.replace(/\/+$/, '') + '/' + cleanPath;
+  if (typeof window.PRIME_BASE_URL === 'string') {
+    const base = window.PRIME_BASE_URL.replace(/\/+$/, '');
+    return (base ? base + '/' : '/') + cleanPath;
   }
   
   // Fallback: infer from current pathname
