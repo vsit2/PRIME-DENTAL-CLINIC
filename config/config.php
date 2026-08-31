@@ -30,6 +30,26 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+// Automatically load local .env file if present
+$envFile = dirname(__DIR__) . '/.env';
+if (file_exists($envFile)) {
+    $envLines = file($envFile, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($envLines as $line) {
+        $line = trim($line);
+        if ($line === '' || str_starts_with($line, '#')) continue;
+        if (strpos($line, '=') !== false) {
+            list($envKey, $envVal) = explode('=', $line, 2);
+            $envKey = trim($envKey);
+            $envVal = trim($envVal, " \t\n\r\0\x0B\"'");
+            if (getenv($envKey) === false && !isset($_ENV[$envKey])) {
+                putenv("$envKey=$envVal");
+                $_ENV[$envKey] = $envVal;
+                $_SERVER[$envKey] = $envVal;
+            }
+        }
+    }
+}
+
 // Database Configuration (Supports Environment Variables for Render / Cloud & local XAMPP)
 $dbUrl = getenv('DATABASE_URL') ?: (getenv('MYSQL_URL') ?: '');
 if (!empty($dbUrl)) {
