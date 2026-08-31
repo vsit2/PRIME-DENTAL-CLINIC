@@ -30,12 +30,22 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-// Database Configuration
-define('DB_HOST', 'localhost');
-define('DB_PORT', '3306');
-define('DB_NAME', 'prime_dental_db');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+// Database Configuration (Supports Environment Variables for Render / Cloud & local XAMPP)
+$dbUrl = getenv('DATABASE_URL') ?: (getenv('MYSQL_URL') ?: '');
+if (!empty($dbUrl)) {
+    $parsedUrl = parse_url($dbUrl);
+    define('DB_HOST', $parsedUrl['host'] ?? 'localhost');
+    define('DB_PORT', (string)($parsedUrl['port'] ?? '3306'));
+    define('DB_USER', $parsedUrl['user'] ?? 'root');
+    define('DB_PASS', $parsedUrl['pass'] ?? '');
+    define('DB_NAME', ltrim($parsedUrl['path'] ?? 'prime_dental_db', '/'));
+} else {
+    define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
+    define('DB_PORT', getenv('DB_PORT') ?: '3306');
+    define('DB_NAME', getenv('DB_NAME') ?: 'prime_dental_db');
+    define('DB_USER', getenv('DB_USER') ?: 'root');
+    define('DB_PASS', getenv('DB_PASS') !== false ? getenv('DB_PASS') : '');
+}
 define('DB_CHARSET', 'utf8mb4');
 
 // Base Paths & URLs
