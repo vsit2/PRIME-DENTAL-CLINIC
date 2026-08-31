@@ -60,11 +60,15 @@ if (!empty($dbUrl)) {
     define('DB_PASS', $parsedUrl['pass'] ?? '');
     define('DB_NAME', ltrim($parsedUrl['path'] ?? 'prime_dental_db', '/'));
 } else {
-    define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
-    define('DB_PORT', getenv('DB_PORT') ?: '3306');
-    define('DB_NAME', getenv('DB_NAME') ?: 'prime_dental_db');
-    define('DB_USER', getenv('DB_USER') ?: 'root');
-    define('DB_PASS', getenv('DB_PASS') !== false ? getenv('DB_PASS') : '');
+    define('DB_HOST', getenv('DB_HOST') ?: (getenv('DB_HOSTNAME') ?: (getenv('MYSQLHOST') ?: 'localhost')));
+    define('DB_PORT', (string)(getenv('DB_PORT') ?: (getenv('MYSQLPORT') ?: '3306')));
+    define('DB_NAME', getenv('DB_NAME') ?: (getenv('DB_DATABASE') ?: (getenv('MYSQLDATABASE') ?: 'prime_dental_db')));
+    define('DB_USER', getenv('DB_USER') ?: (getenv('DB_USERNAME') ?: (getenv('MYSQLUSER') ?: 'root')));
+    
+    $rawPass = getenv('DB_PASS');
+    if ($rawPass === false) $rawPass = getenv('DB_PASSWORD');
+    if ($rawPass === false) $rawPass = getenv('MYSQLPASSWORD');
+    define('DB_PASS', $rawPass !== false ? $rawPass : '');
 }
 define('DB_CHARSET', 'utf8mb4');
 
