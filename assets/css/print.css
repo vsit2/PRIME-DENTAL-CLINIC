@@ -1,0 +1,148 @@
+/* ==========================================================================
+   PRIME DENTAL CLINIC - Print Stylesheet (A4 Optimization)
+   ========================================================================== */
+
+@media print {
+  /* Reset page properties */
+  @page {
+    size: A4 portrait;
+    margin: 15mm 15mm 15mm 15mm;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 11pt !important;
+    line-height: 1.4 !important;
+    font-family: 'Inter', Arial, sans-serif !important;
+  }
+
+  /* Hide navigation, topbars, buttons, footers */
+  .sidebar,
+  .topbar,
+  .btn,
+  .no-print,
+  .toast-container,
+  .modal-overlay,
+  .dental-chart-shortcuts,
+  .profile-tabs {
+    display: none !important;
+  }
+
+  .main-wrapper {
+    margin-left: 0 !important;
+    padding: 0 !important;
+  }
+
+  .page-content {
+    padding: 0 !important;
+  }
+
+  .card {
+    border: none !important;
+    box-shadow: none !important;
+    margin-bottom: 20px !important;
+  }
+
+  /* Print Letterhead Header */
+  .print-letterhead {
+    border-bottom: 2.5pt solid #0d9488 !important;
+    padding-bottom: 12pt !important;
+    margin-bottom: 16pt !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-start !important;
+  }
+
+  .print-clinic-name {
+    font-size: 20pt !important;
+    font-weight: 800 !important;
+    color: #0d9488 !important;
+    margin: 0 !important;
+    letter-spacing: -0.5px !important;
+  }
+
+  .print-tagline {
+    font-size: 10pt !important;
+    font-style: italic !important;
+    color: #475569 !important;
+    margin-bottom: 6pt !important;
+  }
+
+  .print-doctor-info {
+    font-size: 10.5pt !important;
+    font-weight: 700 !important;
+    color: #1e293b !important;
+  }
+
+  .print-clinic-contact {
+    text-align: right !important;
+    font-size: 9pt !important;
+    color: #334155 !important;
+    line-height: 1.3 !important;
+  }
+
+  /* Printable Tables */
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    margin: 12pt 0 !important;
+    page-break-inside: auto;
+  }
+
+  tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
+
+  th, td {
+    border: 1pt solid #cbd5e1 !important;
+    padding: 6pt 8pt !important;
+    font-size: 9.5pt !important;
+  }
+
+  th {
+    background-color: #f1f5f9 !important;
+    color: #0f172a !important;
+    font-weight: 700 !important;
+  }
+
+  /* Patient Info Grid */
+  .print-patient-meta-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8pt !important;
+    background: #f8fafc !important;
+    border: 1pt solid #e2e8f0 !important;
+    padding: 10pt !important;
+    border-radius: 4pt !important;
+    margin-bottom: 14pt !important;
+  }
+
+  .print-meta-item {
+    font-size: 9.5pt !important;
+  }
+
+  .print-meta-label {
+    font-weight: 700 !important;
+    color: #475569 !important;
+  }
+
+  /* Doctor Signature Section */
+  .print-signature-section {
+    margin-top: 30pt !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: flex-end !important;
+    page-break-inside: avoid !important;
+  }
+
+  .print-signature-box {
+    text-align: center !important;
+    width: 200pt !important;
+    border-top: 1pt solid #0f172a !important;
+    padding-top: 5pt !important;
+    font-size: 9.5pt !important;
+    font-weight: 600 !important;
+  }
+}
