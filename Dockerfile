@@ -42,6 +42,12 @@ http {
         root /var/www/html;
         index index.php index.html;
 
+        location = /healthz {
+            access_log off;
+            default_type application/json;
+            return 200 '{"status":"ok","service":"PRIME DENTAL CLINIC"}';
+        }
+
         location / {
             try_files \$uri \$uri/ /index.php?\$query_string;
         }
